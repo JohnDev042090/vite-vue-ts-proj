@@ -1,8 +1,6 @@
     
 <template v-slot:right>
-  <ProfileJsonForm>
-    
-  </ProfileJsonForm>
+  
     <div style="display:flex; justify-content: space-evenly; flex-wrap: wrap;">
         <Form>
           <FormElement style="border: 1px solid #018786; padding: 40px; box-shadow: 1px 2px 3px #03DAC6; border-radius: 5px;">
@@ -47,7 +45,7 @@
                   </template>
               </Field>
     
-              <Field :style="'display:' + _ishidden" :id="'email'" :name="'email'" :component="'myTemplate'" v-bind:email="email" :label="'Email'" :validator="emailValidator" :type="'email'" :placeholder="'youremail@example.com'" :showValidationIcon="_showValidationIcon"  :iconName="'email'">
+              <Field v-if="_age >= 18" :id="'email'" :name="'email'" :component="'myTemplate'" v-bind:email="email" :label="'Email'" :validator="emailValidator" :type="'email'" :placeholder="'youremail@example.com'" :showValidationIcon="_showValidationIcon"  :iconName="'email'">
                   <template v-slot:myTemplate="{props}">
                   <forminput
                       v-bind="props"
@@ -122,7 +120,8 @@
         _isBtnDisabled: _isBtnDisabled,
         _ishidden: _ishidden,
         minDate: '2000-01-01',
-        maxDate: new Date().toISOString().split('T')[0]
+        maxDate: new Date().toISOString().split('T')[0],
+        _age: 0
       };
     },
     inject: {
@@ -144,13 +143,13 @@
         },
         calculateAge() {
           const birthdate = new Date(this.bday);
-          //const birthdate = new Date(this.bdate);
           const today = new Date();
           let age = today.getFullYear() - birthdate.getFullYear();
           const monthDiff = today.getMonth() - birthdate.getMonth();
           // if birthdate month is less than current month
           // OR if birthdate month is equal to current month but the birthdate day is grater than current day
           if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) { age--; }
+          this._age = age;
           if(age < 18) {
             this._ishidden = 'none';
             this._isBtnDisabled = true;
