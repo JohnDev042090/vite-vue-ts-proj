@@ -1,6 +1,6 @@
   <template>
     <div>
-      <jsonforms :schema="schema" :uischema="uischema" :data="data" :renderers=irenderers></jsonforms>
+      <JsonForms :schema="schema" :uischema="uischema" :data="data" :renderers=irenderers></JsonForms>
     </div>
   </template>
   
@@ -9,7 +9,6 @@
   import '@progress/kendo-svg-icons';
   import { JsonForms } from '@jsonforms/vue';
   import { ref } from 'vue';
-  // import { Input } from '@progress/kendo-vue-inputs';
 
   import { vanillaRenderers } from "@jsonforms/vue-vanilla";
 
@@ -18,17 +17,24 @@
 
   export default {
     components: {
-        jsonforms: JsonForms,
-        vanillaRenderers: vanillaRenderers
+      JsonForms: JsonForms,
+      vanillaRenderers: vanillaRenderers
     },
     setup() {
       const schema = {
         "properties": {
-            "name": {
+            "firstName": {
+            "type": "string"
+            },
+            "lastName": {
             "type": "string"
             },
             "email": {
             "type": "string"
+            },
+            "birthDate": {
+              "type": "string",
+              "format": "date"
             }
         }
       };
@@ -37,18 +43,30 @@
         elements: [
           {
             type: 'Control',
-            scope: '#/properties/name',
-            label: 'Name'
+            scope: '#/properties/firstName',
+            label: 'First Name'
+          },
+          {
+            type: 'Control',
+            scope: '#/properties/lastName',
+            label: 'Last Name'
           },
           {
             type: 'Control',
             scope: '#/properties/email',
             label: 'Email'
+          },
+          {
+            "type": "Control",
+            "label": "Birth Date",
+            "scope": "#/properties/birthDate"
           }
         ]
       };
       const data = ref({
-        name: 'John',
+        firstName: 'John',
+        lastName: 'Herrera',
+        birthDate: null,
         email: 'John@gmail.com'
       });
       const irenderers = {

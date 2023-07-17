@@ -1,6 +1,4 @@
-    
-<template v-slot:right>
-  
+    <template v-slot:right>
     <div style="display:flex; justify-content: space-evenly; flex-wrap: wrap;">
         <Form>
           <FormElement style="border: 1px solid #018786; padding: 40px; box-shadow: 1px 2px 3px #03DAC6; border-radius: 5px;">
@@ -12,7 +10,7 @@
               <hr> 
               <br />
               
-              <Field :id="'firstname'" :name="'firstname'" :component="'myTemplate'" v-model="firstname" :label="'First Name'" :type="'text'" :placeholder="'Enter your first name'" :iconName="'user'">
+              <Field :id="'firstname'" :name="'firstname'" :component="'myTemplate'" v-model="firstname" :label="'First Name'" :validator="nameValidator" :type="'text'" :placeholder="'Enter your first name'" :iconName="'user'">
                   <template v-slot:myTemplate="{props}">
                   <forminput
                       v-bind="props"
@@ -23,7 +21,7 @@
                   </template>
               </Field>
               
-              <Field :id="'lastname'" :name="'lastname'" :component="'myTemplate'" v-bind:lastname="lastname" :label="'Last Name'" :type="'text'" :placeholder="'Enter your last name'"  :iconName="'user'">
+              <Field :id="'lastname'" :name="'lastname'" :component="'myTemplate'" v-bind:lastname="lastname" :label="'Last Name'" :validator="nameValidator" :type="'text'" :placeholder="'Enter your last name'"  :iconName="'user'">
                   <template v-slot:myTemplate="{props}">
                     <forminput
                       v-bind="props"
@@ -81,6 +79,10 @@
   //3. Should validate the email using a regular expression
   const emailRegex = new RegExp(/\S+@\S+\.\S+/);
   const emailValidator = (value: string) => emailRegex.test(value) ? "" : "Please enter a valid email.";
+  //   /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/
+  const nameRegex = new RegExp(/^[A-Za-z]+(?:\s[A-Za-z]+)*$/);
+  const nameValidator = (value: string) => nameRegex.test(value) ? "" : "letters and one space between each word are allowed.";
+
   const _showValidationIcon = false;
   const _isBtnDisabled = true;
   const _ishidden = 'none';
@@ -116,6 +118,7 @@
         bday: '',
         bdate: new Date,
         emailValidator: emailValidator,
+        nameValidator: nameValidator,
         _showValidationIcon: _showValidationIcon,
         _isBtnDisabled: _isBtnDisabled,
         _ishidden: _ishidden,
